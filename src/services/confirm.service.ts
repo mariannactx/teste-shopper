@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfirmBody } from 'src/dtos/confirmBody';
 
 @Injectable()
 export class ConfirmService {

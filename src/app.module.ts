@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { MeasureEntity } from './entities/measure.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { MeasureEntity } from './entities/measure.entity';
       namingStrategy: new SnakeNamingStrategy(),
     }),
     TypeOrmModule.forFeature([MeasureEntity]),
+    ConfigModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [UploadService, ConfirmService, ListService],

@@ -1,6 +1,8 @@
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AppRepository } from 'src/app.repository';
+import { detectMimeType } from 'src/utils';
 import { UploadBody } from 'src/dtos/uploadBody';
 import { MeasureEntity } from 'src/entities/measure.entity';
 import { Repository } from 'typeorm';
@@ -31,12 +33,54 @@ export class UploadService {
       );
     }
 
+    let generatedText;
+    try {
+      const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+
+      const prompt = 'Read numbers on the meter and return only the numbers';
+
+      const generatedContent = await model.generateContent([
+        prompt,
+        {
+          inlineData: {
+            data: image,
+            mimeType: detectMimeType(image),
+          },
+        },
+      ]);
+
+      generatedText = generatedContent.response.text();
+    } catch (e: unknown) {
+      throw new HttpException(
+        'Erro ao ler imagem.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    if (!generatedText) {
+      throw new HttpException(
+        'Erro ao ler imagem.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    const onlyNumbers = generatedText.match(/^\d*/);
+
+    if (!onlyNumbers || !onlyNumbers[0].length) {
+      throw new HttpException(
+        'Erro ao ler imagem.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
     const measure = await this.repository.save({
       customer_code,
       measure_datetime,
       measure_type,
       image_url: '',
-      measure_value: 10,
+      measure_value: onlyNumbers[0],
     });
 
     return {
