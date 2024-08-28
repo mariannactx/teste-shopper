@@ -9,6 +9,7 @@ import { BaseExceptionFilter } from '@nestjs/core';
 const errorCodes: PartialRecord<HttpStatus, string> = {
   400: 'INVALID_DATA',
   409: 'DOUBLE_REPORT',
+  500: 'INTERNAL_SERVER_ERROR',
 };
 
 @Catch()
