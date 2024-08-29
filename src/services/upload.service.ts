@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AppRepository } from 'src/app.repository';
 import { detectMimeType } from 'src/utils';
-import { UploadBody } from 'src/dtos/uploadBody';
+import { UploadBodyDTO } from 'src/dtos/uploadBody.dto';
 import { MeasureEntity } from 'src/entities/measure.entity';
 import { Repository } from 'typeorm';
 
@@ -18,7 +18,7 @@ export class UploadService {
     this.repository = new AppRepository(this.measuresRepository);
   }
 
-  async execute(body: UploadBody, baseUrl: string): Promise<UploadResponse> {
+  async execute(body: UploadBodyDTO, baseUrl: string): Promise<UploadResponse> {
     const { measure_datetime, measure_type, customer_code, image } = body;
 
     const measuresOfMonth = await this.repository.findByMonthType(

@@ -5,7 +5,7 @@ const measureTypesEnum: Record<MeasureTypes, MeasureTypes> = {
   GAS: 'GAS',
 };
 
-export class UploadBody {
+export class UploadBodyDTO {
   @IsBase64()
   image: string;
 

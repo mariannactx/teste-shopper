@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ConfirmBody } from 'src/dtos/confirmBody';
+import { ConfirmBodyDTO } from 'src/dtos/confirmBody.dto';
 
 @Injectable()
 export class ConfirmService {
-  execute(body: ConfirmBody): string {
+  execute(body: ConfirmBodyDTO): string {
     return 'Hello World!';
   }
 }

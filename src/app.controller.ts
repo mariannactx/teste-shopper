@@ -15,8 +15,8 @@ import { UploadService } from './services/upload.service';
 import { ConfirmService } from './services/confirm.service';
 import { ListService } from './services/list.service';
 import { ImageService } from './services/image.service';
-import { UploadBody } from './dtos/uploadBody';
-import { ConfirmBody } from './dtos/confirmBody';
+import { UploadBodyDTO } from './dtos/uploadBody.dto';
+import { ConfirmBodyDTO } from './dtos/confirmBody.dto';
 import { UUID } from 'crypto';
 
 @Controller()
@@ -35,7 +35,7 @@ export class AppController {
 
   @Post('upload')
   async createUser(
-    @Body(new ValidationPipe({ transform: true })) body: UploadBody,
+    @Body(new ValidationPipe({ transform: true })) body: UploadBodyDTO,
     @Request() req: Req,
   ): Promise<string> {
     const baseUrl = `${req.protocol}://${req.get('Host')}`;
@@ -43,7 +43,7 @@ export class AppController {
   }
 
   @Patch('confirm')
-  async transfer(@Body() body: ConfirmBody): Promise<any> {
+  async transfer(@Body() body: ConfirmBodyDTO): Promise<any> {
     return await this.confirmService.execute(body);
   }
 

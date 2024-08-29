@@ -1,6 +1,6 @@
 import { UUID } from 'crypto';
 
-export class ConfirmBody {
+export class ConfirmBodyDTO {
   measure_uuid: UUID;
   confirmed_value: number;
 }
