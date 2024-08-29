@@ -6,6 +6,7 @@ import { detectMimeType } from 'src/utils';
 import { UploadBodyDTO } from 'src/dtos/uploadBody.dto';
 import { MeasureEntity } from 'src/entities/measure.entity';
 import { Repository } from 'typeorm';
+import { UploadResponseDTO } from 'src/dtos/uploadResponse.dto';
 
 @Injectable()
 export class UploadService {
@@ -18,7 +19,10 @@ export class UploadService {
     this.repository = new AppRepository(this.measuresRepository);
   }
 
-  async execute(body: UploadBodyDTO, baseUrl: string): Promise<UploadResponse> {
+  async execute(
+    body: UploadBodyDTO,
+    baseUrl: string,
+  ): Promise<UploadResponseDTO> {
     const { measure_datetime, measure_type, customer_code, image } = body;
 
     const measuresOfMonth = await this.repository.findByMonthType(
