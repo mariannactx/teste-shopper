@@ -32,7 +32,10 @@ export class UploadService {
 
     if (measuresOfMonth.length) {
       throw new HttpException(
-        'Leitura do mês já realizada',
+        {
+          code: 'DOUBLE_REPORT',
+          message: 'Leitura do mês já realizada',
+        },
         HttpStatus.CONFLICT,
       );
     }
@@ -85,7 +88,7 @@ export class UploadService {
       customer_code,
       measure_datetime,
       measure_type,
-      measure_value: onlyNumbers[0],
+      measure_value: parseInt(onlyNumbers[0]),
       image_url: baseUrl,
       image: image,
       image_type: mimeType,

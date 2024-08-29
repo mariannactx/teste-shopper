@@ -1,4 +1,4 @@
-import { IsBase64, IsEnum, IsISO8601 } from 'class-validator';
+import { IsBase64, IsEnum, IsISO8601, IsString } from 'class-validator';
 
 const measureTypesEnum: Record<MeasureTypes, MeasureTypes> = {
   WATER: 'WATER',
@@ -9,6 +9,7 @@ export class UploadBodyDTO {
   @IsBase64()
   image: string;
 
+  @IsString()
   customer_code: string;
 
   @IsISO8601()

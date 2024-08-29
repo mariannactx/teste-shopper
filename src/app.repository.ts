@@ -1,7 +1,7 @@
 import { randomUUID, UUID } from 'crypto';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { MeasureEntity } from './entities/measure.entity';
-import { MeasureDTO } from './dtos/measureDTO';
+import { SaveMeasureDTO } from './dtos/saveMeasure.dto';
 
 export class AppRepository implements BaseRepository {
   constructor(private measuresRepository: Repository<MeasureEntity>) {}
@@ -11,7 +11,7 @@ export class AppRepository implements BaseRepository {
   }
 
   findById(id: UUID) {
-    return this.measuresRepository.findOneByOrFail({ _id: id });
+    return this.measuresRepository.findOneBy({ _id: id });
   }
 
   findByMonthType(
@@ -39,7 +39,7 @@ export class AppRepository implements BaseRepository {
       .toArray();
   }
 
-  async save(data: MeasureDTO): Promise<MeasureEntity> {
+  async save(data: SaveMeasureDTO): Promise<MeasureEntity> {
     const uuid = randomUUID();
     const measure: MeasureEntity = {
       _id: uuid,
@@ -53,6 +53,16 @@ export class AppRepository implements BaseRepository {
       image_type: data.image_type,
     };
 
-    return await this.measuresRepository.save(measure);
+    return this.measuresRepository.save(measure);
+  }
+
+  confirm(id: UUID, value: number): Promise<UpdateResult> {
+    return this.measuresRepository.update(
+      { _id: id },
+      {
+        has_confirmed: true,
+        measure_value: value,
+      },
+    );
   }
 }

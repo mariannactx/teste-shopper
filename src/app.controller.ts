@@ -43,7 +43,9 @@ export class AppController {
   }
 
   @Patch('confirm')
-  async transfer(@Body() body: ConfirmBodyDTO): Promise<any> {
+  async transfer(
+    @Body(new ValidationPipe({ transform: true })) body: ConfirmBodyDTO,
+  ): Promise<any> {
     return await this.confirmService.execute(body);
   }
 

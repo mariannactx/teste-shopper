@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AppRepository } from 'src/app.repository';
 import { MeasureEntity } from 'src/entities/measure.entity';
@@ -22,6 +22,9 @@ export class ImageService {
   }> {
     const measure = await this.repository.findById(id);
 
+    if (!measure) {
+      throw new HttpException('Leitura não encontrada', HttpStatus.NOT_FOUND);
+    }
     const fileBuffer = Buffer.from(measure.image, 'base64');
     const fileStream = Readable.from(fileBuffer);
 
