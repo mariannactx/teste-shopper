@@ -1,4 +1,5 @@
 interface BaseRepository {
+  findById(id: UUID);
   findByMonthType(
     datetime: string,
     type: MeasureTypes,

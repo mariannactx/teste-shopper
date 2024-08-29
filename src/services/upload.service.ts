@@ -18,7 +18,7 @@ export class UploadService {
     this.repository = new AppRepository(this.measuresRepository);
   }
 
-  async execute(body: UploadBody): Promise<UploadResponse> {
+  async execute(body: UploadBody, baseUrl: string): Promise<UploadResponse> {
     const { measure_datetime, measure_type, customer_code, image } = body;
 
     const measuresOfMonth = await this.repository.findByMonthType(
@@ -33,6 +33,8 @@ export class UploadService {
       );
     }
 
+    const mimeType = detectMimeType(image);
+
     let generatedText;
     try {
       const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -46,7 +48,7 @@ export class UploadService {
         {
           inlineData: {
             data: image,
-            mimeType: detectMimeType(image),
+            mimeType,
           },
         },
       ]);
@@ -79,8 +81,10 @@ export class UploadService {
       customer_code,
       measure_datetime,
       measure_type,
-      image_url: '',
       measure_value: onlyNumbers[0],
+      image_url: baseUrl,
+      image: image,
+      image_type: mimeType,
     });
 
     return {

@@ -8,6 +8,7 @@ import { DataSource } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { MeasureEntity } from './entities/measure.entity';
 import { ConfigModule } from '@nestjs/config';
+import { ImageService } from './services/image.service';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [UploadService, ConfirmService, ListService],
+  providers: [UploadService, ConfirmService, ListService, ImageService],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}

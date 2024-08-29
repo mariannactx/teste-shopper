@@ -23,4 +23,10 @@ export class MeasureEntity implements Measure {
 
   @Column()
   measure_value: number;
+
+  @Column()
+  image: string;
+
+  @Column()
+  image_type: string;
 }
