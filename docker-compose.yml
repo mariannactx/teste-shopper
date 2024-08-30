@@ -36,6 +36,25 @@ services:
     networks:
       - mongo-compose-network
 
+  api:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - '80:80'
+    healthcheck:
+      test: wget -qO- http://localhost/healthcheck
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    depends_on:
+      mongo:
+        condition: service_healthy
+    links:
+      - mongo
+    networks:
+      - mongo-compose-network
+
 networks:
   mongo-compose-network:
     driver: bridge

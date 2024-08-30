@@ -18,6 +18,8 @@ import { ImageService } from './services/image.service';
 import { UploadBodyDTO } from './dtos/uploadBody.dto';
 import { ConfirmBodyDTO } from './dtos/confirmBody.dto';
 import { UUID } from 'crypto';
+import { MeasureEntity } from './entities/measure.entity';
+import { ListResponseDTO } from './dtos/listResponse.dto';
 
 @Controller()
 export class AppController {
@@ -45,7 +47,7 @@ export class AppController {
   @Patch('confirm')
   async transfer(
     @Body(new ValidationPipe({ transform: true })) body: ConfirmBodyDTO,
-  ): Promise<any> {
+  ): Promise<string> {
     return await this.confirmService.execute(body);
   }
 
@@ -53,7 +55,7 @@ export class AppController {
   async list(
     @Param() params: { customer: string },
     @Query() query: { measure_type: MeasureTypes },
-  ): Promise<string> {
+  ): Promise<ListResponseDTO[]> {
     return await this.listService.execute(params.customer, query.measure_type);
   }
 

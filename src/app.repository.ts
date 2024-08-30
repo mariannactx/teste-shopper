@@ -14,7 +14,7 @@ export class AppRepository implements BaseRepository {
     return this.measuresRepository.findOneBy({ _id: id });
   }
 
-  findByMonthType(
+  findByMonthAndType(
     datetime: string,
     type: MeasureTypes,
   ): Promise<MeasureEntity[]> {
@@ -37,6 +37,33 @@ export class AppRepository implements BaseRepository {
         },
       ])
       .toArray();
+  }
+
+  findByCustomer(customer_code: string) {
+    return this.measuresRepository.find({
+      where: { customer_code },
+      select: [
+        'measure_datetime',
+        'measure_type',
+        'has_confirmed',
+        'image_url',
+      ],
+    });
+  }
+
+  findByCustomerAndType(customer_code: string, measure_type: MeasureTypes) {
+    return this.measuresRepository.find({
+      where: {
+        customer_code,
+        measure_type,
+      },
+      select: [
+        'measure_datetime',
+        'measure_type',
+        'has_confirmed',
+        'image_url',
+      ],
+    });
   }
 
   async save(data: SaveMeasureDTO): Promise<MeasureEntity> {

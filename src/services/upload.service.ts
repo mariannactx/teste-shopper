@@ -25,7 +25,7 @@ export class UploadService {
   ): Promise<UploadResponseDTO> {
     const { measure_datetime, measure_type, customer_code, image } = body;
 
-    const measuresOfMonth = await this.repository.findByMonthType(
+    const measuresOfMonth = await this.repository.findByMonthAndType(
       measure_datetime,
       measure_type,
     );

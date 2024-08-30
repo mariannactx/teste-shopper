@@ -12,3 +12,8 @@ export function detectMimeType(b64) {
     }
   }
 }
+
+export function isMeasureType(input: string): input is MeasureTypes {
+  const measureTypes: MeasureTypes[] = ['GAS', 'WATER'];
+  return measureTypes.includes(input as MeasureTypes);
+}

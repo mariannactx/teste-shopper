@@ -14,7 +14,7 @@ import { ImageService } from './services/image.service';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mongodb',
-      host: 'localhost',
+      host: 'mongo',
       port: 27017,
       username: 'root',
       password: '0123456789',
